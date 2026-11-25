@@ -1,0 +1,1833 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="Painel independente de vendas Porsche com dados sanitizados, filtros combináveis e valores em USD.">
+  <title>Vendas Porsche | Painel sanitizado em USD</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #f2efe6;
+      --surface: #fbf9f3;
+      --ink: #171715;
+      --muted: #5a5852;
+      --line: #c9c4b9;
+      --track: #e4dfd5;
+      --signal: #c8102e;
+      --signal-ink: #a20c25;
+      --black: #151513;
+      --white: #fffdf7;
+      --display: "Barlow Condensed", "Arial Narrow", "Liberation Sans Narrow", sans-serif;
+      --body: "Source Sans 3", "Segoe UI", Arial, sans-serif;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scrollbar-color: var(--signal) var(--paper);
+    }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--body);
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    ::selection {
+      background: var(--signal);
+      color: var(--white);
+    }
+
+    button,
+    select {
+      font: inherit;
+    }
+
+    button,
+    select,
+    summary,
+    a[href],
+    label[for] {
+      cursor: pointer;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+    }
+
+    :focus-visible {
+      outline: 3px solid var(--signal);
+      outline-offset: 3px;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .skip-link {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      z-index: 20;
+      padding: 10px 14px;
+      background: var(--ink);
+      color: var(--white);
+      transform: translateY(-160%);
+      transition: transform 160ms ease-out;
+    }
+
+    .skip-link:focus {
+      transform: translateY(0);
+    }
+
+    .site-header {
+      border-bottom: 1px solid var(--ink);
+    }
+
+    .header-inner,
+    main,
+    .footer-inner {
+      width: min(100%, 1440px);
+      margin-inline: auto;
+      padding-inline: clamp(16px, 4vw, 48px);
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 32px;
+      padding-block: 24px;
+    }
+
+    .brand-lockup {
+      min-width: 0;
+    }
+
+    .wordmark {
+      margin: 0;
+      font-family: var(--display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      line-height: 1;
+    }
+
+    .wordmark span {
+      margin-left: 10px;
+      color: var(--signal-ink);
+    }
+
+    h1,
+    h2,
+    p {
+      overflow-wrap: break-word;
+    }
+
+    h1 {
+      max-width: 100%;
+      margin: 10px 0 0;
+      font-family: var(--display);
+      font-size: clamp(2.8rem, 5vw, 4.6rem);
+      font-weight: 600;
+      letter-spacing: -0.025em;
+      line-height: 0.92;
+      text-transform: uppercase;
+    }
+
+    .intro {
+      max-width: 58ch;
+      margin: 12px 0 0;
+      color: var(--muted);
+    }
+
+    .scope-list {
+      display: flex;
+      flex: 0 0 auto;
+      margin: 0;
+      border-top: 1px solid var(--ink);
+    }
+
+    .scope-list div {
+      min-width: 96px;
+      padding: 9px 14px;
+      border-left: 1px solid var(--line);
+    }
+
+    .scope-list dt {
+      color: var(--muted);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .scope-list dd {
+      margin: 2px 0 0;
+      font-family: var(--display);
+      font-size: 1.45rem;
+      font-weight: 600;
+      line-height: 1.1;
+    }
+
+    main {
+      display: grid;
+      gap: 24px;
+      padding-block: 24px 64px;
+    }
+
+    #dashboard {
+      display: grid;
+      min-width: 0;
+      gap: 24px;
+    }
+
+    .state-panel,
+    .filters,
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      background: var(--surface);
+    }
+
+    .state-panel {
+      padding: 40px;
+    }
+
+    .state-panel h2 {
+      margin: 16px 0 0;
+      font-family: var(--display);
+      font-size: 2rem;
+      font-weight: 600;
+      line-height: 1.05;
+    }
+
+    .state-panel p {
+      max-width: 62ch;
+      margin: 8px 0 0;
+      color: var(--muted);
+    }
+
+    .state-error {
+      border-color: var(--signal);
+    }
+
+    .state-error h2 {
+      margin-top: 0;
+    }
+
+    .loading-rule {
+      display: block;
+      width: 132px;
+      height: 3px;
+      background: var(--signal);
+    }
+
+    .filters,
+    .panel {
+      padding: 28px;
+    }
+
+    .section-heading,
+    .panel-heading {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .section-heading h2,
+    .panel-heading h2 {
+      margin: 0;
+      font-family: var(--display);
+      font-size: clamp(1.65rem, 2.5vw, 2.2rem);
+      font-weight: 600;
+      letter-spacing: -0.015em;
+      line-height: 1.05;
+    }
+
+    .section-heading p,
+    .panel-heading p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .filter-heading {
+      align-items: center;
+    }
+
+    .filter-actions {
+      display: flex;
+      flex: 0 0 auto;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .button {
+      min-height: 44px;
+      padding: 10px 16px;
+      border: 1px solid var(--ink);
+      border-radius: 2px;
+      font-weight: 600;
+      line-height: 1.2;
+      transition: background-color 160ms ease-out, border-color 160ms ease-out, color 160ms ease-out, transform 160ms ease-out;
+    }
+
+    .button-primary {
+      background: var(--ink);
+      color: var(--white);
+    }
+
+    .button-primary:hover:not(:disabled) {
+      border-color: var(--signal);
+      background: var(--signal);
+    }
+
+    .button-secondary {
+      background: transparent;
+      color: var(--ink);
+    }
+
+    .button-secondary:hover:not(:disabled) {
+      background: #e9e4da;
+    }
+
+    .button:active:not(:disabled) {
+      transform: translateY(1px);
+    }
+
+    .button:disabled {
+      opacity: 0.45;
+    }
+
+    #reload-button {
+      margin-top: 18px;
+    }
+
+    .filter-summary {
+      margin: 18px 0 14px;
+      padding-top: 12px;
+      border-top: 1px solid var(--line);
+      font-weight: 600;
+    }
+
+    .filter-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .field {
+      min-width: 0;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.86rem;
+      font-weight: 600;
+    }
+
+    .field select {
+      width: 100%;
+      min-height: 44px;
+      padding: 9px 30px 9px 10px;
+      border: 1px solid #8f8b82;
+      border-radius: 2px;
+      background: var(--white);
+      color: var(--ink);
+      text-overflow: ellipsis;
+      transition: border-color 160ms ease-out, background-color 160ms ease-out;
+    }
+
+    .field select:hover {
+      border-color: var(--ink);
+      background: #fffefa;
+    }
+
+    .link-status {
+      margin: 12px 0 0;
+      color: var(--signal-ink);
+      font-size: 0.86rem;
+    }
+
+    .kpi-band {
+      display: grid;
+      grid-template-columns: 1.8fr 0.8fr 0.9fr 1.1fr;
+      overflow: hidden;
+      border: 1px solid var(--black);
+      border-radius: 3px;
+      background: var(--black);
+      color: var(--white);
+    }
+
+    .kpi {
+      min-width: 0;
+      padding: 22px 24px;
+      border-left: 1px solid #45443f;
+    }
+
+    .kpi:first-child {
+      border-left: 0;
+    }
+
+    .kpi-revenue {
+      position: relative;
+    }
+
+    .kpi-revenue::after {
+      position: absolute;
+      right: 24px;
+      bottom: 0;
+      left: 24px;
+      height: 3px;
+      background: var(--signal);
+      content: "";
+    }
+
+    .kpi-label {
+      margin: 0 0 7px;
+      color: #ddd8ce;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .kpi-value {
+      margin: 0;
+      font-family: var(--display);
+      font-variant-numeric: tabular-nums;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 0.95;
+      overflow-wrap: anywhere;
+    }
+
+    .kpi-revenue .kpi-value {
+      font-size: clamp(3.1rem, 6vw, 5.8rem);
+    }
+
+    .kpi:not(.kpi-revenue) .kpi-value {
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+    }
+
+    .kpi-leader .kpi-value {
+      font-size: clamp(1.55rem, 2.5vw, 2.15rem);
+      line-height: 1;
+    }
+
+    .kpi-note {
+      margin: 10px 0 0;
+      color: #ddd8ce;
+      font-size: 0.82rem;
+    }
+
+    .panel {
+      min-width: 0;
+    }
+
+    .panel-heading {
+      margin-bottom: 18px;
+    }
+
+    .panel-stat {
+      flex: 0 0 auto;
+      margin: 0;
+      color: var(--signal-ink);
+      font-family: var(--display);
+      font-size: 1.35rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .bar-list,
+    .rank-list,
+    .payment-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .bar-row {
+      display: grid;
+      grid-template-columns: minmax(140px, 0.75fr) minmax(120px, 1.8fr) minmax(180px, 1fr);
+      gap: 18px;
+      align-items: center;
+      padding: 13px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .bar-row:first-child {
+      border-top: 0;
+    }
+
+    .bar-label {
+      display: flex;
+      min-width: 0;
+      align-items: baseline;
+      gap: 10px;
+    }
+
+    .rank {
+      min-width: 1.35rem;
+      color: var(--signal-ink);
+      font-family: var(--display);
+      font-size: 1.2rem;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .bar-name {
+      min-width: 0;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .bar-track {
+      height: 14px;
+      border-radius: 1px;
+      background: var(--track);
+    }
+
+    .bar-fill {
+      width: var(--bar-size);
+      height: 100%;
+      min-width: 2px;
+      background: var(--signal);
+      transition: width 220ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .bar-value {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .bar-value strong {
+      display: block;
+      font-weight: 700;
+    }
+
+    .bar-value span {
+      display: block;
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .chart-axis {
+      display: grid;
+      grid-template-columns: minmax(140px, 0.75fr) minmax(120px, 1.8fr) minmax(180px, 1fr);
+      gap: 18px;
+      margin-top: 8px;
+    }
+
+    .axis-ticks {
+      display: grid;
+      grid-column: 2;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      color: var(--signal-ink);
+      font-size: 0.75rem;
+      font-variant-numeric: tabular-nums;
+      font-weight: 600;
+    }
+
+    .axis-ticks span {
+      padding-top: 6px;
+      border-left: 1px solid var(--signal);
+    }
+
+    .axis-ticks span:first-child {
+      border-left: 0;
+    }
+
+    .axis-ticks span:last-child {
+      text-align: right;
+    }
+
+    .panel-footnote {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    .chart-insight {
+      margin: 18px 0 0;
+      padding-top: 12px;
+      border-top: 1px solid var(--ink);
+      font-weight: 600;
+    }
+
+    .chart-insight strong {
+      color: var(--signal-ink);
+    }
+
+    .dual-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .rank-row {
+      display: grid;
+      grid-template-columns: 1.8rem 2.5rem minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: center;
+      padding: 10px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .rank-row:first-child {
+      border-top: 0;
+    }
+
+    .state-code {
+      font-family: var(--display);
+      font-size: 1.4rem;
+      font-weight: 600;
+    }
+
+    .state-main {
+      min-width: 0;
+    }
+
+    .state-revenue {
+      display: block;
+      font-variant-numeric: tabular-nums;
+      font-weight: 700;
+    }
+
+    .state-bar {
+      display: block;
+      height: 4px;
+      margin-top: 5px;
+      background: var(--track);
+    }
+
+    .state-bar span {
+      display: block;
+      width: var(--bar-size);
+      height: 100%;
+      min-width: 2px;
+      background: var(--signal);
+      transition: width 220ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .state-meta {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .state-share {
+      display: block;
+      font-weight: 700;
+    }
+
+    .state-quantity {
+      display: block;
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    .state-average {
+      display: block;
+      color: var(--muted);
+      font-size: 0.75rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .distribution-key {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin: -6px 0 14px;
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    .distribution-key span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .distribution-key span::before {
+      width: 14px;
+      height: 4px;
+      content: "";
+    }
+
+    .key-revenue::before {
+      background: var(--signal);
+    }
+
+    .key-quantity::before {
+      background: var(--ink);
+    }
+
+    .payment-row {
+      padding: 13px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .payment-row:first-child {
+      border-top: 0;
+    }
+
+    .payment-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .payment-name {
+      min-width: 0;
+      font-weight: 600;
+      overflow-wrap: anywhere;
+    }
+
+    .payment-average {
+      flex: 0 0 auto;
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-variant-numeric: tabular-nums;
+      text-align: right;
+    }
+
+    .payment-metrics {
+      display: grid;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .metric-line {
+      display: grid;
+      grid-template-columns: 4.6rem minmax(0, 1fr) 7rem;
+      gap: 8px;
+      align-items: center;
+      font-size: 0.78rem;
+    }
+
+    .metric-label {
+      color: var(--muted);
+    }
+
+    .mini-track {
+      height: 6px;
+      background: var(--track);
+    }
+
+    .mini-fill {
+      display: block;
+      width: var(--bar-size);
+      height: 100%;
+      min-width: 2px;
+      transition: width 220ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .mini-fill.revenue {
+      background: var(--signal);
+    }
+
+    .mini-fill.quantity {
+      background: var(--ink);
+    }
+
+    .metric-value {
+      font-variant-numeric: tabular-nums;
+      font-weight: 600;
+      text-align: right;
+    }
+
+    .metric-value strong,
+    .metric-value small {
+      display: block;
+    }
+
+    .metric-value small {
+      margin-top: 1px;
+      color: var(--muted);
+      font-size: 0.75rem;
+      font-weight: 400;
+    }
+
+    .empty-state {
+      padding: 24px 12px;
+      border: 1px dashed var(--line);
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .data-quality {
+      margin: 0 0 16px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      background: #eee9df;
+      font-size: 0.88rem;
+    }
+
+    .data-quality strong {
+      color: var(--signal-ink);
+    }
+
+    .base-quality {
+      margin: 8px 0 16px;
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+
+    .base-quality strong {
+      color: var(--ink);
+    }
+
+    .table-wrap {
+      min-width: 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    caption {
+      padding: 0 0 12px;
+      color: var(--muted);
+      font-weight: 600;
+      text-align: left;
+    }
+
+    th {
+      padding: 10px 12px;
+      border-bottom: 2px solid var(--ink);
+      color: var(--muted);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-align: left;
+      text-transform: uppercase;
+    }
+
+    td {
+      padding: 12px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      overflow-wrap: anywhere;
+    }
+
+    tbody tr:hover {
+      background: #f1ece3;
+    }
+
+    .numeric {
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .invalid-date {
+      color: var(--signal-ink);
+      font-weight: 600;
+      text-decoration: underline;
+      text-decoration-style: dotted;
+      text-underline-offset: 3px;
+    }
+
+    .empty-cell {
+      padding: 32px 12px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .site-footer {
+      border-top: 1px solid var(--black);
+      background: var(--black);
+      color: var(--white);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      padding-block: 22px;
+    }
+
+    .footer-inner p {
+      max-width: 70ch;
+      margin: 0;
+    }
+
+    .footer-inner p:last-child {
+      flex: 0 0 auto;
+      color: #ddd8ce;
+      font-size: 0.86rem;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    @media (max-width: 1100px) {
+      .filter-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .kpi-band {
+        grid-template-columns: 1.5fr 1fr 1fr;
+      }
+
+      .kpi-leader {
+        grid-column: 1 / -1;
+        border-top: 1px solid #45443f;
+        border-left: 0;
+      }
+    }
+
+    @media (max-width: 960px) {
+      .filter-heading {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .filter-actions {
+        width: 100%;
+      }
+
+      .dual-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .header-inner {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .scope-list {
+        width: 100%;
+      }
+
+      .scope-list div {
+        flex: 1 1 0;
+        min-width: 0;
+        padding-inline: 10px;
+      }
+
+      .filter-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .kpi-band {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .kpi-revenue {
+        grid-column: 1 / -1;
+      }
+
+      .kpi:nth-child(2),
+      .kpi:nth-child(3) {
+        border-top: 1px solid #45443f;
+      }
+
+      .kpi:nth-child(3) {
+        border-left: 0;
+      }
+
+      .kpi-leader {
+        grid-column: 1 / -1;
+      }
+
+      .bar-row {
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 8px 12px;
+      }
+
+      .bar-label {
+        grid-row: 1;
+        grid-column: 1;
+      }
+
+      .bar-value {
+        grid-row: 1;
+        grid-column: 2;
+      }
+
+      .bar-track {
+        grid-row: 2;
+        grid-column: 1 / -1;
+      }
+
+      .chart-axis {
+        display: block;
+        margin-top: 8px;
+      }
+
+      .axis-ticks {
+        grid-column: auto;
+      }
+
+      .table-wrap table,
+      .table-wrap tbody,
+      .table-wrap tr,
+      .table-wrap td {
+        display: block;
+        width: 100%;
+      }
+
+      .table-wrap thead {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      .table-wrap caption {
+        display: block;
+      }
+
+      .table-wrap tr {
+        padding: 14px 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .table-wrap td {
+        display: grid;
+        grid-template-columns: 7.5rem minmax(0, 1fr);
+        gap: 12px;
+        padding: 5px 0;
+        border: 0;
+        text-align: left;
+        white-space: normal;
+      }
+
+      .table-wrap td::before {
+        padding-top: 2px;
+        color: var(--muted);
+        content: attr(data-label);
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .footer-inner {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 8px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      main {
+        gap: 18px;
+        padding-block: 18px 44px;
+      }
+
+      .state-panel {
+        padding: 24px;
+      }
+
+      #dashboard {
+        gap: 18px;
+      }
+
+      .filters,
+      .panel {
+        padding: 18px;
+      }
+
+      .filter-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .filter-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+
+      .kpi-band {
+        grid-template-columns: 1fr;
+      }
+
+      .kpi,
+      .kpi:nth-child(2),
+      .kpi:nth-child(3),
+      .kpi-leader {
+        grid-column: auto;
+        border-top: 1px solid #45443f;
+        border-left: 0;
+      }
+
+      .kpi:first-child {
+        border-top: 0;
+      }
+
+      .panel-heading {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .rank-row {
+        grid-template-columns: 1.5rem 2.2rem minmax(0, 1fr) auto;
+        gap: 8px;
+      }
+
+      .metric-line {
+        grid-template-columns: 4rem minmax(0, 1fr) 6.5rem;
+        gap: 6px;
+      }
+
+      .payment-head {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 3px;
+      }
+
+      .payment-average {
+        text-align: left;
+      }
+
+      .table-wrap td {
+        grid-template-columns: 6.8rem minmax(0, 1fr);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#filters">Pular para os filtros</a>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand-lockup">
+        <p class="wordmark">PORSCHE <span>VENDAS</span></p>
+        <h1>Painel de vendas</h1>
+        <p class="intro">Desempenho de uma base sanitizada de concessionária dos EUA. Receita, volume e ticket médio no mesmo recorte.</p>
+      </div>
+      <dl class="scope-list">
+        <div>
+          <dt>Registros</dt>
+          <dd id="base-count">-</dd>
+        </div>
+        <div>
+          <dt>Mercado</dt>
+          <dd>EUA</dd>
+        </div>
+        <div>
+          <dt>Moeda</dt>
+          <dd>USD</dd>
+        </div>
+      </dl>
+    </div>
+  </header>
+
+  <main id="conteudo" aria-busy="true">
+    <div id="loading-state" class="state-panel" role="status">
+      <span class="loading-rule" aria-hidden="true"></span>
+      <h2>Carregando a base</h2>
+      <p>Preparando os registros sanitizados e os controles de análise.</p>
+    </div>
+
+    <div id="error-state" class="state-panel state-error" role="alert" hidden>
+      <h2>Não foi possível carregar os dados</h2>
+      <p id="error-message">O JSON embutido não pôde ser lido. Recarregue o arquivo ou restaure a base sanitizada.</p>
+      <button id="reload-button" class="button button-primary" type="button">Recarregar página</button>
+    </div>
+
+    <div id="dashboard" hidden>
+      <section id="filters" class="filters" tabindex="-1" aria-labelledby="filters-title" aria-describedby="filter-summary">
+        <div class="section-heading filter-heading">
+          <div>
+            <h2 id="filters-title">Recorte da análise</h2>
+            <p>Os filtros se combinam e atualizam indicadores, gráficos e tabela.</p>
+          </div>
+          <div class="filter-actions">
+            <button id="clear-filters" class="button button-secondary" type="button" disabled>Limpar filtros</button>
+            <button id="export-csv" class="button button-primary" type="button">Exportar CSV</button>
+          </div>
+        </div>
+        <p id="filter-summary" class="filter-summary" role="status" aria-live="polite" aria-atomic="true">Carregando o recorte.</p>
+        <div class="filter-grid">
+          <div class="field">
+            <label for="filter-modelo">Modelo</label>
+            <select id="filter-modelo" data-filter="modelo">
+              <option value="">Todos os modelos</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="filter-estado">Estado</label>
+            <select id="filter-estado" data-filter="estado">
+              <option value="">Todos os estados</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="filter-cidade">Cidade</label>
+            <select id="filter-cidade" data-filter="cidade">
+              <option value="">Todas as cidades</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="filter-ano">Ano do modelo</label>
+            <select id="filter-ano" data-filter="ano">
+              <option value="">Todos os anos do modelo</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="filter-pagamento">Pagamento</label>
+            <select id="filter-pagamento" data-filter="pagamento">
+              <option value="">Todos os pagamentos</option>
+            </select>
+          </div>
+        </div>
+        <p id="link-status" class="link-status" role="status" hidden></p>
+        <p id="export-status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
+      </section>
+
+      <section class="kpi-section" aria-labelledby="kpi-title">
+        <h2 id="kpi-title" class="sr-only">Indicadores do recorte</h2>
+        <div class="kpi-band">
+          <article class="kpi kpi-revenue">
+            <p class="kpi-label">Receita bruta</p>
+            <p id="kpi-revenue" class="kpi-value">$0</p>
+            <p id="kpi-revenue-note" class="kpi-note">USD · soma dos preços das vendas no recorte. Não é lucro.</p>
+          </article>
+          <article class="kpi">
+            <p class="kpi-label">Vendas registradas</p>
+            <p id="kpi-sales" class="kpi-value">0</p>
+            <p class="kpi-note">Registros no recorte</p>
+          </article>
+          <article class="kpi">
+            <p class="kpi-label">Ticket médio</p>
+            <p id="kpi-average" class="kpi-value">$0</p>
+            <p class="kpi-note">Receita por venda</p>
+          </article>
+          <article class="kpi kpi-leader">
+            <p class="kpi-label">Modelo líder</p>
+            <p id="kpi-leader" class="kpi-value">Sem vendas</p>
+            <p id="kpi-leader-note" class="kpi-note">Ordenado por receita</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="familias" class="panel family-panel" aria-labelledby="families-title">
+        <div class="panel-heading">
+          <div>
+            <h2 id="families-title">Quais famílias de modelos puxam a receita?</h2>
+            <p>Ranking por receita, com quantidade e ticket médio por família.</p>
+          </div>
+          <p id="family-count" class="panel-stat">0 famílias</p>
+        </div>
+        <ol id="family-list" class="bar-list" aria-label="Famílias de modelos ordenadas por receita, quantidade e ticket médio"></ol>
+        <div id="family-axis" class="chart-axis" aria-hidden="true"></div>
+        <p class="panel-footnote">Barras comparam receita. A régua numérica usa USD.</p>
+        <p id="family-insight" class="chart-insight" hidden></p>
+      </section>
+
+      <div class="dual-grid">
+        <section id="estados" class="panel states-panel" aria-labelledby="states-title">
+          <div class="panel-heading">
+            <div>
+              <h2 id="states-title">Quais estados concentram as vendas?</h2>
+              <p>Ranking por receita, participação, quantidade e ticket médio.</p>
+            </div>
+            <p id="state-count" class="panel-stat">0 estados</p>
+          </div>
+          <ol id="state-list" class="rank-list" aria-label="Estados ordenados por receita, participação, quantidade e ticket médio"></ol>
+          <p class="panel-footnote">Top 10 por receita. A tabela abaixo contém todos os registros e estados.</p>
+          <p id="state-insight" class="chart-insight" hidden></p>
+        </section>
+
+        <section id="pagamentos" class="panel payments-panel" aria-labelledby="payments-title">
+          <div class="panel-heading">
+            <div>
+              <h2 id="payments-title">Como os clientes pagam?</h2>
+              <p>Distribuição por receita e quantidade, com ticket médio.</p>
+            </div>
+            <p id="payment-count" class="panel-stat">0 métodos</p>
+          </div>
+          <p class="distribution-key" aria-hidden="true">
+            <span class="key-revenue">Receita</span>
+            <span class="key-quantity">Quantidade</span>
+          </p>
+          <ol id="payment-list" class="payment-list" aria-label="Pagamentos ordenados por receita, com participação na receita, na quantidade e ticket médio"></ol>
+          <p id="payment-insight" class="chart-insight" hidden></p>
+        </section>
+      </div>
+
+      <section id="registros" class="panel table-panel" aria-labelledby="table-title">
+        <div class="panel-heading">
+          <div>
+            <h2 id="table-title">Registros do recorte</h2>
+            <p>Confira cada venda usada nos cálculos. Datas inválidas permanecem inclusas.</p>
+          </div>
+        </div>
+        <p id="data-quality" class="data-quality"></p>
+        <p id="base-quality" class="base-quality"></p>
+        <div class="table-wrap">
+          <table>
+            <caption id="table-caption">Vendas filtradas.</caption>
+            <thead>
+              <tr>
+                <th scope="col">Data</th>
+                <th scope="col">Modelo</th>
+                <th scope="col">Ano do modelo</th>
+                <th scope="col">Cidade / UF</th>
+                <th scope="col">Pagamento</th>
+                <th scope="col">Entrega</th>
+                <th scope="col" class="numeric">Preço (USD)</th>
+              </tr>
+            </thead>
+            <tbody id="sales-body"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p>Projeto independente de estudo. Dados sanitizados do desafio DIO. Sem vínculo oficial com a Porsche.</p>
+      <p>Amostra de 100 registros, sem projeções. Valores em USD. Datas em pt-BR.</p>
+    </div>
+  </footer>
+
+  <script id="sales-data" type="application/json">[{"data":null,"modelo":"718 Cayman","ano":2022,"preco":79500,"quilometragem":9800,"pagamento":"Credit Card","cidade":"Boston","estado":"MA","entrega":"Delivered"},{"data":"2024-03-14","modelo":"911 Turbo S","ano":2024,"preco":235000,"quilometragem":1200,"pagamento":"Wire Transfer","cidade":"Seattle","estado":"WA","entrega":"Delivered"},{"data":"2024-04-18","modelo":"Cayenne Coupe","ano":2023,"preco":112750,"quilometragem":6400,"pagamento":"Financing","cidade":"Austin","estado":"TX","entrega":"In Transit"},{"data":null,"modelo":"Macan S","ano":2021,"preco":68900,"quilometragem":28,"pagamento":"Cash","cidade":"Denver","estado":"CO","entrega":"Pending"},{"data":"2024-05-22","modelo":"Taycan 4S","ano":2024,"preco":121000,"quilometragem":0,"pagamento":"Bank Transfer","cidade":"Los Angeles","estado":"CA","entrega":"Delivered"},{"data":"2024-08-06","modelo":"Panamera 4","ano":2023,"preco":104500,"quilometragem":14500,"pagamento":"Credit Card","cidade":"Miami","estado":"FL","entrega":"Cancelled"},{"data":"2024-07-11","modelo":"911 Carrera S","ano":2020,"preco":96300,"quilometragem":41000,"pagamento":"Lease","cidade":"New York","estado":"NY","entrega":"Delivered"},{"data":null,"modelo":"Cayenne E-Hybrid","ano":2022,"preco":89750,"quilometragem":11744,"pagamento":"Wire Transfer","cidade":"San Diego","estado":"CA","entrega":"Pending Approval"},{"data":"2024-08-19","modelo":"718 Boxster","ano":2021,"preco":73500,"quilometragem":22300,"pagamento":"Debit Card","cidade":"Chicago","estado":"IL","entrega":"Shipped"},{"data":"2024-09-02","modelo":"Macan GTS","ano":2024,"preco":95000,"quilometragem":3500,"pagamento":"Financing","cidade":"Phoenix","estado":"AZ","entrega":"In Transit"},{"data":"2024-09-17","modelo":"Taycan Turbo","ano":2023,"preco":153200.5,"quilometragem":11,"pagamento":"ACH Payment","cidade":"Dallas","estado":"TX","entrega":"Delivered"},{"data":null,"modelo":"911 GT3","ano":2024,"preco":241000,"quilometragem":750,"pagamento":"Wire Transfer","cidade":"Las Vegas","estado":"NV","entrega":"Pending"},{"data":"2024-05-11","modelo":"Panamera Turbo S","ano":2022,"preco":132000,"quilometragem":19250,"pagamento":"Cash","cidade":"San Jose","estado":"CA","entrega":"Delivered"},{"data":"2024-12-12","modelo":"Cayenne Turbo GT","ano":2024,"preco":188000,"quilometragem":2100,"pagamento":"Crypto Payment","cidade":"Houston","estado":"TX","entrega":"Awaiting Delivery"},{"data":"2024-12-25","modelo":"911 Carrera Cabriolet","ano":2023,"preco":127800,"quilometragem":12000,"pagamento":"Credit Card","cidade":"Atlanta","estado":"GA","entrega":"Delivered"},{"data":"2025-01-06","modelo":"Macan","ano":2021,"preco":58900,"quilometragem":33700,"pagamento":"Bank Transfer","cidade":"Orlando","estado":"FL","entrega":"Pending"},{"data":null,"modelo":"718 Spyder RS","ano":2024,"preco":164000,"quilometragem":900,"pagamento":"Financing","cidade":"Portland","estado":"OR","entrega":"In Transit"},{"data":"2025-02-14","modelo":"Taycan Cross Turismo","ano":2023,"preco":118500,"quilometragem":7800,"pagamento":"Wire Transfer","cidade":"Charlotte","estado":"NC","entrega":"Delivered"},{"data":null,"modelo":"Cayenne S","ano":2022,"preco":91300,"quilometragem":16000,"pagamento":"Credit Card","cidade":"Nashville","estado":"TN","entrega":"Pending"},{"data":"2025-03-21","modelo":"911 Targa 4S","ano":2024,"preco":158750,"quilometragem":2500,"pagamento":"Lease","cidade":"Minneapolis","estado":"MN","entrega":"Delivered"},{"data":"2025-03-28","modelo":"Panamera","ano":2020,"preco":72000,"quilometragem":49000,"pagamento":"Bank Transfer","cidade":"Philadelphia","estado":"PA","entrega":"Cancelled"},{"data":"2025-04-09","modelo":"Macan Electric","ano":2025,"preco":86500,"quilometragem":0,"pagamento":"Wire Transfer","cidade":"San Antonio","estado":"TX","entrega":"Delivered"},{"data":null,"modelo":"911 Dakar","ano":2024,"preco":270000,"quilometragem":1050,"pagamento":"Cash","cidade":"Salt Lake City","estado":"UT","entrega":"Awaiting Pickup"},{"data":"2025-05-12","modelo":"Taycan GTS","ano":2023,"preco":139000,"quilometragem":6250,"pagamento":"Financing","cidade":"Raleigh","estado":"NC","entrega":"In Transit"},{"data":"2025-06-18","modelo":"Cayenne","ano":2021,"preco":76800,"quilometragem":38400,"pagamento":"Credit Card","cidade":"Detroit","estado":"MI","entrega":"Delivered"},{"data":null,"modelo":"718 Cayman GT4 RS","ano":2024,"preco":173600,"quilometragem":400,"pagamento":"Wire Transfer","cidade":"Columbus","estado":"OH","entrega":"Pending"},{"data":"2025-07-07","modelo":"911 Carrera GTS","ano":2022,"preco":119900,"quilometragem":13600,"pagamento":"Cash","cidade":"Indianapolis","estado":"IN","entrega":"Delivered"},{"data":"2025-07-22","modelo":"Panamera 4 E-Hybrid","ano":2023,"preco":109250,"quilometragem":8900,"pagamento":"Lease","cidade":"Fort Worth","estado":"TX","entrega":"In Transit"},{"data":"2025-08-14","modelo":"Macan T","ano":2022,"preco":82000,"quilometragem":21750,"pagamento":"Wire Transfer","cidade":"Jacksonville","estado":"FL","entrega":"Delivered"},{"data":"2025-09-01","modelo":"Taycan Turbo S","ano":2025,"preco":214000,"quilometragem":0,"pagamento":"Crypto Payment","cidade":"San Diego","estado":"CA","entrega":"Pending Review"},{"data":null,"modelo":"911 Carrera","ano":2024,"preco":124500,"quilometragem":4800,"pagamento":"Credit Card","cidade":"Tampa","estado":"FL","entrega":"Delivered"},{"data":"2025-09-18","modelo":"Cayenne S","ano":2023,"preco":98200,"quilometragem":12200,"pagamento":"Bank Transfer","cidade":"Sacramento","estado":"CA","entrega":"Pending"},{"data":"2025-10-04","modelo":"Macan","ano":2022,"preco":67500,"quilometragem":24100,"pagamento":"Financing","cidade":"Cleveland","estado":"OH","entrega":"Delivered"},{"data":"2025-10-12","modelo":"Taycan","ano":2025,"preco":116900,"quilometragem":0,"pagamento":"Wire Transfer","cidade":"Milwaukee","estado":"WI","entrega":"In Transit"},{"data":"2025-10-29","modelo":"Panamera 4S","ano":2024,"preco":112000,"quilometragem":10,"pagamento":"Cash","cidade":"Kansas City","estado":"MO","entrega":"Delivered"},{"data":"2025-02-11","modelo":"718 Boxster","ano":2021,"preco":74000,"quilometragem":31000,"pagamento":"Debit Card","cidade":"Omaha","estado":"NE","entrega":"Cancelled"},{"data":"2025-11-16","modelo":"911 Turbo","ano":2024,"preco":198300,"quilometragem":2400,"pagamento":"Wire Transfer","cidade":"Albuquerque","estado":"NM","entrega":"Awaiting Delivery"},{"data":null,"modelo":"Cayenne Coupe","ano":2023,"preco":103750,"quilometragem":6773,"pagamento":"Wire Transfer","cidade":"Tucson","estado":"AZ","entrega":"Pending Approval"},{"data":null,"modelo":"Macan GTS","ano":2024,"preco":93600,"quilometragem":5800,"pagamento":"Financing","cidade":"Fresno","estado":"CA","entrega":"Shipped"},{"data":"2025-12-07","modelo":"Taycan 4S","ano":2025,"preco":129000,"quilometragem":0,"pagamento":"ACH Payment","cidade":"Virginia Beach","estado":"VA","entrega":"In Transit"},{"data":"2025-12-22","modelo":"Panamera Turbo","ano":2022,"preco":136000,"quilometragem":18400,"pagamento":"Credit Card","cidade":"Colorado Springs","estado":"CO","entrega":"Delivered"},{"data":null,"modelo":"911 GT3 RS","ano":2024,"preco":286500,"quilometragem":700,"pagamento":"Wire Transfer","cidade":"Arlington","estado":"TX","entrega":"Pending"},{"data":"2026-01-08","modelo":"Cayenne E-Hybrid","ano":2023,"preco":92800,"quilometragem":15000,"pagamento":"Lease","cidade":"Bakersfield","estado":"CA","entrega":"Delivered"},{"data":"2026-01-15","modelo":"Macan T","ano":2022,"preco":72400,"quilometragem":19750,"pagamento":"Cash","cidade":"Mesa","estado":"AZ","entrega":"Awaiting Pickup"},{"data":"2026-01-28","modelo":"Taycan Turbo","ano":2025,"preco":158500,"quilometragem":3200,"pagamento":"Crypto Payment","cidade":"Atlanta","estado":"GA","entrega":"Delivered"},{"data":"2026-02-03","modelo":"718 Cayman","ano":2021,"preco":69900,"quilometragem":27600,"pagamento":"Bank Transfer","cidade":"Long Beach","estado":"CA","entrega":"Pending"},{"data":null,"modelo":"911 Targa 4","ano":2024,"preco":141250,"quilometragem":2100,"pagamento":"Financing","cidade":"Oakland","estado":"CA","entrega":"In Transit"},{"data":"2026-02-19","modelo":"Panamera","ano":2020,"preco":71500,"quilometragem":52000,"pagamento":"Wire Transfer","cidade":"Tulsa","estado":"OK","entrega":"Delivered"},{"data":"2026-02-25","modelo":"Cayenne Turbo","ano":2023,"preco":146800,"quilometragem":11300,"pagamento":"Credit Card","cidade":"Wichita","estado":"KS","entrega":"Pending"},{"data":"2026-03-01","modelo":"Macan Electric","ano":2025,"preco":89700,"quilometragem":0,"pagamento":"Lease","cidade":"New Orleans","estado":"LA","entrega":"Delivered"},{"data":"2026-03-14","modelo":"911 Carrera S","ano":2022,"preco":104600,"quilometragem":15900,"pagamento":"Bank Transfer","cidade":"Honolulu","estado":"HI","entrega":"Cancelled"},{"data":null,"modelo":"Taycan GTS","ano":2024,"preco":142000,"quilometragem":6600,"pagamento":"Wire Transfer","cidade":"Anaheim","estado":"CA","entrega":"Delivered"},{"data":"2026-04-08","modelo":"Cayenne","ano":2021,"preco":78400,"quilometragem":40250,"pagamento":"Cash","cidade":"Henderson","estado":"NV","entrega":"Awaiting Review"},{"data":null,"modelo":"718 Spyder RS","ano":2025,"preco":169000,"quilometragem":850,"pagamento":"Financing","cidade":"Lexington","estado":"KY","entrega":"In Transit"},{"data":"2026-04-21","modelo":"911 Dakar","ano":2024,"preco":268900,"quilometragem":1400,"pagamento":"Credit Card","cidade":"Riverside","estado":"CA","entrega":"Delivered"},{"data":"2026-04-29","modelo":"Panamera 4","ano":2023,"preco":101300,"quilometragem":12700,"pagamento":"Wire Transfer","cidade":"Corpus Christi","estado":"TX","entrega":"Pending"},{"data":"2026-05-05","modelo":"Macan S","ano":2021,"preco":66750,"quilometragem":29800,"pagamento":"Cash","cidade":"St. Louis","estado":"MO","entrega":"Delivered"},{"data":"2026-05-14","modelo":"Taycan Cross Turismo","ano":2024,"preco":127900,"quilometragem":7500,"pagamento":"Lease","cidade":"Pittsburgh","estado":"PA","entrega":"In Transit"},{"data":"2026-05-23","modelo":"Cayenne Turbo GT","ano":2025,"preco":200000,"quilometragem":1950,"pagamento":"Wire Transfer","cidade":"Cincinnati","estado":"OH","entrega":"Delivered"},{"data":"2026-06-02","modelo":"911 Carrera Cabriolet","ano":2023,"preco":132000,"quilometragem":8800,"pagamento":"Crypto Payment","cidade":"Anchorage","estado":"AK","entrega":"Pending Review"},{"data":"2026-06-15","modelo":"718 Cayman GT4 RS","ano":2024,"preco":176400,"quilometragem":600,"pagamento":"Credit Card","cidade":"Plano","estado":"TX","entrega":"Delivered"},{"data":null,"modelo":"Panamera 4 E-Hybrid","ano":2022,"preco":108500,"quilometragem":16200,"pagamento":"Bank Transfer","cidade":"Newark","estado":"NJ","entrega":"Cancelled"},{"data":"2026-07-07","modelo":"Macan","ano":2021,"preco":59000,"quilometragem":36000,"pagamento":"Financing","cidade":"Greensboro","estado":"NC","entrega":"Awaiting Delivery"},{"data":"2026-07-20","modelo":"Taycan Turbo S","ano":2025,"preco":218000,"quilometragem":0,"pagamento":"Wire Transfer","cidade":"Lincoln","estado":"NE","entrega":"Pending"},{"data":null,"modelo":"Cayenne S","ano":2024,"preco":99950,"quilometragem":5300,"pagamento":"Debit Card","cidade":"Jersey City","estado":"NJ","entrega":"Delivered"},{"data":"2026-04-08","modelo":"911 Carrera GTS","ano":2024,"preco":121750,"quilometragem":5872,"pagamento":"Credit Card","cidade":"Chandler","estado":"AZ","entrega":"Delivered"},{"data":"2026-08-18","modelo":"718 Boxster GTS","ano":2023,"preco":91500,"quilometragem":13300,"pagamento":"Lease","cidade":"Reno","estado":"NV","entrega":"Shipped"},{"data":"2026-08-31","modelo":"Panamera Turbo S","ano":2022,"preco":134000,"quilometragem":20100,"pagamento":"Wire Transfer","cidade":"Buffalo","estado":"NY","entrega":"In Transit"},{"data":"2026-09-09","modelo":"Macan GTS","ano":2024,"preco":96800,"quilometragem":0,"pagamento":"ACH Payment","cidade":"Durham","estado":"NC","entrega":"Delivered"},{"data":"2026-09-17","modelo":"Taycan 4S","ano":2025,"preco":131600,"quilometragem":2900,"pagamento":"Wire Transfer","cidade":"Laredo","estado":"TX","entrega":"Pending Approval"},{"data":"2026-09-28","modelo":"Cayenne E-Hybrid","ano":2023,"preco":94300,"quilometragem":13100,"pagamento":"Cash","cidade":"Madison","estado":"WI","entrega":"Delivered"},{"data":"2026-10-06","modelo":"911 Turbo S","ano":2025,"preco":242000,"quilometragem":1100,"pagamento":"Crypto Payment","cidade":"Lubbock","estado":"TX","entrega":"Awaiting Pickup"},{"data":"2026-10-16","modelo":"718 Cayman S","ano":2022,"preco":82750,"quilometragem":22500,"pagamento":"Credit Card","cidade":"Toledo","estado":"OH","entrega":"Cancelled"},{"data":"2026-10-29","modelo":"Macan Electric","ano":2026,"preco":91300,"quilometragem":0,"pagamento":"Wire Transfer","cidade":"Irvine","estado":"CA","entrega":"Delivered"},{"data":"2026-11-03","modelo":"Panamera","ano":2021,"preco":79900,"quilometragem":44800,"pagamento":"Financing","cidade":"Garland","estado":"TX","entrega":"Pending"},{"data":null,"modelo":"Cayenne Coupe","ano":2024,"preco":111000,"quilometragem":6700,"pagamento":"Bank Transfer","cidade":"Irving","estado":"TX","entrega":"In Transit"},{"data":"2026-12-11","modelo":"911 Targa 4S","ano":2023,"preco":156500,"quilometragem":4200,"pagamento":"Cash","cidade":"Chesapeake","estado":"VA","entrega":"Delivered"},{"data":"2026-12-24","modelo":"Taycan","ano":2025,"preco":119900,"quilometragem":1250,"pagamento":"Lease","cidade":"Scottsdale","estado":"AZ","entrega":"Pending"},{"data":null,"modelo":"Macan T","ano":2022,"preco":73200,"quilometragem":18600,"pagamento":"Wire Transfer","cidade":"Norfolk","estado":"VA","entrega":"Delivered"},{"data":"2026-12-28","modelo":"911 GT3","ano":2024,"preco":224000,"quilometragem":3000,"pagamento":"Wire Transfer","cidade":"Boise","estado":"ID","entrega":"Awaiting Delivery"},{"data":"2027-01-15","modelo":"911 Carrera","ano":2024,"preco":126900,"quilometragem":7200,"pagamento":"Credit Card","cidade":"Orlando","estado":"FL","entrega":"Delivered"},{"data":"2027-01-29","modelo":"Cayenne","ano":2023,"preco":84500,"quilometragem":21400,"pagamento":"Bank Transfer","cidade":"San Jose","estado":"CA","entrega":"Pending"},{"data":"2027-02-11","modelo":"Macan S","ano":2022,"preco":69800,"quilometragem":26300,"pagamento":"Financing","cidade":"Tampa","estado":"FL","entrega":"Delivered"},{"data":null,"modelo":"Taycan 4S","ano":2025,"preco":132700,"quilometragem":0,"pagamento":"Wire Transfer","cidade":"Denver","estado":"CO","entrega":"In Transit"},{"data":"2027-03-05","modelo":"Panamera","ano":2021,"preco":81000,"quilometragem":42,"pagamento":"Cash","cidade":"Austin","estado":"TX","entrega":"Delivered"},{"data":"2027-03-18","modelo":"718 Cayman","ano":2023,"preco":78900,"quilometragem":17500,"pagamento":"Debit Card","cidade":"Seattle","estado":"WA","entrega":"Cancelled"},{"data":"2027-04-02","modelo":"911 Turbo S","ano":2026,"preco":249300,"quilometragem":900,"pagamento":"Wire Transfer","cidade":"Boston","estado":"MA","entrega":"Awaiting Delivery"},{"data":null,"modelo":"Cayenne Coupe","ano":2024,"preco":108750,"quilometragem":5530,"pagamento":"Wire Transfer","cidade":"Phoenix","estado":"AZ","entrega":"Pending Approval"},{"data":null,"modelo":"Macan Electric","ano":2026,"preco":92600,"quilometragem":0,"pagamento":"Financing","cidade":"Chicago","estado":"IL","entrega":"Shipped"},{"data":"2027-05-12","modelo":"Taycan Turbo","ano":2025,"preco":164000,"quilometragem":0,"pagamento":"ACH Payment","cidade":"Dallas","estado":"TX","entrega":"In Transit"},{"data":"2027-05-27","modelo":"Panamera 4S","ano":2024,"preco":119000,"quilometragem":13400,"pagamento":"Credit Card","cidade":"San Francisco","estado":"CA","entrega":"Delivered"},{"data":null,"modelo":"911 GT3","ano":2026,"preco":232500,"quilometragem":1700,"pagamento":"Wire Transfer","cidade":"Las Vegas","estado":"NV","entrega":"Pending"},{"data":"2027-06-18","modelo":"Cayenne E-Hybrid","ano":2023,"preco":96800,"quilometragem":14000,"pagamento":"Lease","cidade":"Charlotte","estado":"NC","entrega":"Delivered"},{"data":"2027-07-03","modelo":"Macan T","ano":2022,"preco":74400,"quilometragem":20750,"pagamento":"Cash","cidade":"Mesa","estado":"AZ","entrega":"Awaiting Pickup"},{"data":"2027-07-22","modelo":"Taycan GTS","ano":2025,"preco":148500,"quilometragem":5200,"pagamento":"Crypto Payment","cidade":"Atlanta","estado":"GA","entrega":"Delivered"},{"data":"2027-08-08","modelo":"718 Boxster","ano":2021,"preco":71900,"quilometragem":29600,"pagamento":"Bank Transfer","cidade":"Long Beach","estado":"CA","entrega":"Pending"},{"data":null,"modelo":"911 Targa 4","ano":2024,"preco":143250,"quilometragem":3100,"pagamento":"Financing","cidade":"Oakland","estado":"CA","entrega":"In Transit"},{"data":"2027-09-19","modelo":"Panamera Turbo","ano":2020,"preco":137500,"quilometragem":48000,"pagamento":"Wire Transfer","cidade":"Tulsa","estado":"OK","entrega":"Delivered"},{"data":"2027-09-25","modelo":"Cayenne Turbo GT","ano":2025,"preco":204800,"quilometragem":3300,"pagamento":"Credit Card","cidade":"Wichita","estado":"KS","entrega":"Pending"},{"data":"2027-10-01","modelo":"911 Dakar","ano":2024,"preco":271700,"quilometragem":1050,"pagamento":"Lease","cidade":"New Orleans","estado":"LA","entrega":"Delivered"}]</script>
+  <script>
+    (() => {
+      "use strict";
+
+      const filterConfig = [
+        { key: "modelo", id: "filter-modelo", label: "Todos os modelos" },
+        { key: "estado", id: "filter-estado", label: "Todos os estados" },
+        { key: "cidade", id: "filter-cidade", label: "Todas as cidades" },
+        { key: "ano", id: "filter-ano", label: "Todos os anos do modelo", numeric: true, descending: true },
+        { key: "pagamento", id: "filter-pagamento", label: "Todos os pagamentos" }
+      ];
+
+      const usdWhole = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      });
+      const usdCents = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+      const usdCompact = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        notation: "compact",
+        maximumFractionDigits: 1
+      });
+      const numberFormat = new Intl.NumberFormat("pt-BR");
+      const percentFormat = new Intl.NumberFormat("pt-BR", {
+        style: "percent",
+        minimumFractionDigits: 1,
+        maximumFractionDigits: 1
+      });
+      const dateFormat = new Intl.DateTimeFormat("pt-BR", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+        timeZone: "UTC"
+      });
+      const modelFamilies = ["911", "Taycan", "Cayenne", "Panamera", "Macan", "718"];
+      const projectDate = Date.UTC(2026, 10, 25);
+
+      const byId = id => document.getElementById(id);
+      const state = Object.fromEntries(filterConfig.map(filter => [filter.key, ""]));
+      const allowedValues = new Map();
+      let rows = [];
+      let filteredRows = [];
+
+      function formatCurrency(value, forceCents = false) {
+        return forceCents || !Number.isInteger(value) ? usdCents.format(value) : usdWhole.format(value);
+      }
+
+      function formatCount(value) {
+        return numberFormat.format(value);
+      }
+
+      function formatPercent(value) {
+        return percentFormat.format(value);
+      }
+
+      function parseDate(value) {
+        if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
+        const [year, month, day] = value.split("-").map(Number);
+        const date = new Date(Date.UTC(year, month - 1, day));
+        if (
+          date.getUTCFullYear() !== year ||
+          date.getUTCMonth() !== month - 1 ||
+          date.getUTCDate() !== day
+        ) return null;
+        return date;
+      }
+
+      function formatDate(value) {
+        const date = parseDate(value);
+        return date ? dateFormat.format(date) : "Data inválida";
+      }
+
+      function escapeHtml(value) {
+        return String(value).replace(/[&<>"']/g, character => ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          "\"": "&quot;",
+          "'": "&#39;"
+        })[character]);
+      }
+
+      function pluralize(count, singular, plural) {
+        return `${formatCount(count)} ${count === 1 ? singular : plural}`;
+      }
+
+      function validateRows(payload) {
+        if (!Array.isArray(payload) || payload.length === 0) {
+          throw new Error("A base embutida deve conter um array de vendas.");
+        }
+        const stringFields = ["modelo", "pagamento", "cidade", "estado", "entrega"];
+        payload.forEach((row, index) => {
+          if (!row || typeof row !== "object") {
+            throw new Error(`Registro ${index + 1} inválido.`);
+          }
+          if (!Number.isFinite(row.preco) || row.preco < 0 || !Number.isInteger(row.ano)) {
+            throw new Error(`Preço ou ano inválido no registro ${index + 1}.`);
+          }
+          stringFields.forEach(field => {
+            if (typeof row[field] !== "string" || row[field].trim() === "") {
+              throw new Error(`Campo ${field} ausente no registro ${index + 1}.`);
+            }
+          });
+          if (row.data !== null && typeof row.data !== "string") {
+            throw new Error(`Data inválida no registro ${index + 1}.`);
+          }
+        });
+      }
+
+      function populateFilters() {
+        filterConfig.forEach(filter => {
+          const select = byId(filter.id);
+          const values = [...new Set(rows.map(row => row[filter.key]))];
+          values.sort((a, b) => filter.numeric
+            ? Number(a) - Number(b)
+            : String(a).localeCompare(String(b), "pt-BR"));
+          if (filter.descending) values.reverse();
+          allowedValues.set(filter.key, new Set(values.map(String)));
+          values.forEach(value => {
+            const option = document.createElement("option");
+            option.value = String(value);
+            option.textContent = String(value);
+            select.append(option);
+          });
+        });
+      }
+
+      function restoreFilters() {
+        const params = new URLSearchParams(window.location.search);
+        filterConfig.forEach(filter => {
+          const requested = params.get(filter.key) || "";
+          const valid = requested && allowedValues.get(filter.key).has(requested) ? requested : "";
+          state[filter.key] = valid;
+          byId(filter.id).value = valid;
+        });
+      }
+
+      function syncQuery() {
+        const params = new URLSearchParams(window.location.search);
+        filterConfig.forEach(filter => {
+          params.delete(filter.key);
+          if (state[filter.key]) params.set(filter.key, state[filter.key]);
+        });
+        const search = params.toString();
+        const nextUrl = `${window.location.pathname}${search ? `?${search}` : ""}${window.location.hash}`;
+        try {
+          window.history.replaceState(null, "", nextUrl);
+          byId("link-status").hidden = true;
+        } catch {
+          const status = byId("link-status");
+          status.textContent = "Os filtros estão ativos, mas este navegador não permitiu atualizar o endereço para compartilhamento.";
+          status.hidden = false;
+        }
+      }
+
+      function modelFamily(model) {
+        return modelFamilies.find(family => model.startsWith(`${family} `)) || model;
+      }
+
+      function aggregate(payload, keyOrAccessor) {
+        const groups = new Map();
+        const totalRevenue = payload.reduce((sum, row) => sum + row.preco, 0);
+        payload.forEach(row => {
+          const key = typeof keyOrAccessor === "function" ? keyOrAccessor(row) : row[keyOrAccessor];
+          const group = groups.get(key) || { key, revenue: 0, count: 0 };
+          group.revenue += row.preco;
+          group.count += 1;
+          groups.set(key, group);
+        });
+        return [...groups.values()]
+          .sort((a, b) => b.revenue - a.revenue || b.count - a.count || String(a.key).localeCompare(String(b.key), "pt-BR"))
+          .map(group => ({
+            ...group,
+            average: group.revenue / group.count,
+            revenueShare: totalRevenue ? group.revenue / totalRevenue : 0,
+            quantityShare: group.count / payload.length
+          }));
+      }
+
+      function niceMaximum(value) {
+        if (value <= 0) return 1;
+        const magnitude = 10 ** Math.floor(Math.log10(value));
+        const fraction = value / magnitude;
+        const niceFraction = fraction <= 1 ? 1 : fraction <= 2 ? 2 : fraction <= 2.5 ? 2.5 : fraction <= 5 ? 5 : 10;
+        return niceFraction * magnitude;
+      }
+
+      function setInsight(id, leader, label, share) {
+        const element = byId(id);
+        if (!leader) {
+          element.textContent = "";
+          element.hidden = true;
+          return;
+        }
+        element.innerHTML = `<strong>${escapeHtml(leader)}</strong> ${escapeHtml(label)} ${formatPercent(share)} da receita do recorte.`;
+        element.hidden = false;
+      }
+
+      function emptyChart(message) {
+        return `<li class="empty-state">${escapeHtml(message)}</li>`;
+      }
+
+      function renderKpis(totalRevenue) {
+        const models = filteredRows.length ? aggregate(filteredRows, "modelo") : [];
+        const leader = models[0];
+        const cancelledCount = filteredRows.filter(row => row.entrega === "Cancelled").length;
+        byId("kpi-revenue").textContent = formatCurrency(totalRevenue);
+        byId("kpi-revenue-note").textContent = `USD · soma dos preços de ${pluralize(filteredRows.length, "venda", "vendas")}, incluindo ${pluralize(cancelledCount, "cancelamento", "cancelamentos")}. Não é lucro.`;
+        byId("kpi-sales").textContent = formatCount(filteredRows.length);
+        byId("kpi-average").textContent = formatCurrency(filteredRows.length ? totalRevenue / filteredRows.length : 0);
+        byId("kpi-leader").textContent = leader ? leader.key : "Sem vendas";
+        byId("kpi-leader-note").textContent = leader
+          ? `Receita de ${formatCurrency(leader.revenue)}`
+          : "Nenhum modelo no recorte";
+      }
+
+      function renderFamilies() {
+        const families = filteredRows.length ? aggregate(filteredRows, row => modelFamily(row.modelo)) : [];
+        const list = byId("family-list");
+        const axis = byId("family-axis");
+        byId("family-count").textContent = pluralize(families.length, "família", "famílias");
+
+        if (!families.length) {
+          list.innerHTML = emptyChart("Nenhuma família encontrada para este recorte.");
+          axis.innerHTML = "";
+          setInsight("family-insight", null);
+          return;
+        }
+
+        const maximum = niceMaximum(families[0].revenue);
+        list.innerHTML = families.map((family, index) => `
+          <li class="bar-row">
+            <div class="bar-label">
+              <span class="rank" aria-hidden="true">${index + 1}</span>
+              <span class="bar-name">${escapeHtml(family.key)}</span>
+            </div>
+            <div class="bar-track" aria-hidden="true">
+              <div class="bar-fill" style="--bar-size: ${(family.revenue / maximum * 100).toFixed(2)}%"></div>
+            </div>
+            <div class="bar-value">
+              <strong>${formatCurrency(family.revenue)}</strong>
+              <span>${pluralize(family.count, "venda", "vendas")} · ticket médio ${formatCurrency(family.average)}</span>
+            </div>
+          </li>
+        `).join("");
+        axis.innerHTML = `<div class="axis-ticks">${Array.from({ length: 5 }, (_, index) => `<span>${usdCompact.format(maximum * index / 4)}</span>`).join("")}</div>`;
+        setInsight("family-insight", families[0].key, "lidera a receita com", families[0].revenueShare);
+      }
+
+      function renderStates() {
+        const allStates = filteredRows.length ? aggregate(filteredRows, "estado") : [];
+        const states = allStates.slice(0, 10);
+        const list = byId("state-list");
+        const maximum = states.length && states[0].revenue > 0 ? states[0].revenue : 1;
+        byId("state-count").textContent = pluralize(allStates.length, "estado", "estados");
+
+        if (!states.length) {
+          list.innerHTML = emptyChart("Nenhum estado encontrado para este recorte.");
+          setInsight("state-insight", null);
+          return;
+        }
+
+        list.innerHTML = states.map((stateItem, index) => `
+          <li class="rank-row">
+            <span class="rank" aria-hidden="true">${index + 1}</span>
+            <span class="state-code">${escapeHtml(stateItem.key)}</span>
+            <div class="state-main">
+              <span class="state-revenue">${formatCurrency(stateItem.revenue)}</span>
+              <span class="state-bar" aria-hidden="true"><span style="--bar-size: ${(stateItem.revenue / maximum * 100).toFixed(2)}%"></span></span>
+            </div>
+            <div class="state-meta">
+              <span class="state-share">${formatPercent(stateItem.revenueShare)}</span>
+              <span class="state-quantity">${pluralize(stateItem.count, "venda", "vendas")}</span>
+              <span class="state-average">Ticket médio ${formatCurrency(stateItem.average)}</span>
+            </div>
+          </li>
+        `).join("");
+        setInsight("state-insight", states[0].key, "concentra", states[0].revenueShare);
+      }
+
+      function renderPayments() {
+        const payments = filteredRows.length ? aggregate(filteredRows, "pagamento") : [];
+        const list = byId("payment-list");
+        byId("payment-count").textContent = pluralize(payments.length, "método", "métodos");
+
+        if (!payments.length) {
+          list.innerHTML = emptyChart("Nenhum pagamento encontrado para este recorte.");
+          setInsight("payment-insight", null);
+          return;
+        }
+
+        list.innerHTML = payments.map(payment => `
+          <li class="payment-row">
+            <div class="payment-head">
+              <span class="payment-name">${escapeHtml(payment.key)}</span>
+              <span class="payment-average">Ticket médio ${formatCurrency(payment.average)}</span>
+            </div>
+            <div class="payment-metrics">
+              <div class="metric-line">
+                <span class="metric-label">Receita</span>
+                <span class="mini-track" aria-hidden="true"><span class="mini-fill revenue" style="--bar-size: ${(payment.revenueShare * 100).toFixed(2)}%"></span></span>
+                <span class="metric-value"><strong>${formatCurrency(payment.revenue)}</strong><small>${formatPercent(payment.revenueShare)} da receita</small></span>
+              </div>
+              <div class="metric-line">
+                <span class="metric-label">Quantidade</span>
+                <span class="mini-track" aria-hidden="true"><span class="mini-fill quantity" style="--bar-size: ${(payment.quantityShare * 100).toFixed(2)}%"></span></span>
+                <span class="metric-value"><strong>${pluralize(payment.count, "venda", "vendas")}</strong><small>${formatPercent(payment.quantityShare)} do total</small></span>
+              </div>
+            </div>
+          </li>
+        `).join("");
+        setInsight("payment-insight", payments[0].key, "responde por", payments[0].revenueShare);
+      }
+
+      function renderTable() {
+        const body = byId("sales-body");
+        byId("table-caption").textContent = `Vendas filtradas: ${pluralize(filteredRows.length, "registro", "registros")}.`;
+
+        if (!filteredRows.length) {
+          body.innerHTML = `<tr><td class="empty-cell" colspan="7">Nenhuma venda corresponde aos filtros selecionados. Limpe um filtro para ampliar o recorte.</td></tr>`;
+          return;
+        }
+
+        body.innerHTML = filteredRows.map(row => {
+          const date = parseDate(row.data);
+          return `
+            <tr>
+              <td data-label="Data">${date ? escapeHtml(formatDate(row.data)) : '<span class="invalid-date">Data inválida</span>'}</td>
+              <td data-label="Modelo">${escapeHtml(row.modelo)}</td>
+              <td data-label="Ano do modelo">${row.ano}</td>
+              <td data-label="Cidade / UF">${escapeHtml(row.cidade)} / ${escapeHtml(row.estado)}</td>
+              <td data-label="Pagamento">${escapeHtml(row.pagamento)}</td>
+              <td data-label="Entrega">${escapeHtml(row.entrega)}</td>
+              <td data-label="Preço (USD)" class="numeric">${formatCurrency(row.preco, true)}</td>
+            </tr>
+          `;
+        }).join("");
+      }
+
+      function renderDataQuality() {
+        const invalidCount = filteredRows.filter(row => !parseDate(row.data)).length;
+        byId("data-quality").innerHTML = invalidCount
+          ? `<strong>${pluralize(invalidCount, "data inválida", "datas inválidas")} neste recorte.</strong> Esses registros permanecem na receita, nas vendas e nos gráficos.`
+          : "<strong>Nenhuma data inválida neste recorte.</strong> Todos os registros permanecem nos cálculos.";
+      }
+
+      function renderBaseQuality() {
+        const invalidCount = rows.filter(row => !parseDate(row.data)).length;
+        const futureCount = rows.filter(row => {
+          const date = parseDate(row.data);
+          return date && date.getTime() > projectDate;
+        }).length;
+        byId("base-quality").innerHTML = `<strong>Base completa:</strong> ${pluralize(invalidCount, "data inválida", "datas inválidas")} e ${pluralize(futureCount, "data válida posterior", "datas válidas posteriores")} a ${escapeHtml(dateFormat.format(new Date(projectDate)))}, data do projeto. Nenhuma data é usada para tendência temporal.`;
+      }
+
+      function updateControls() {
+        const activeFilters = filterConfig.filter(filter => state[filter.key]).length;
+        byId("clear-filters").disabled = activeFilters === 0;
+        byId("export-csv").disabled = filteredRows.length === 0;
+        byId("export-csv").title = filteredRows.length
+          ? `Baixar ${pluralize(filteredRows.length, "registro", "registros")} em CSV`
+          : "Nenhuma venda para exportar";
+      }
+
+      function renderSummary(totalRevenue) {
+        const activeFilters = filterConfig.filter(filter => state[filter.key]).length;
+        const filterText = activeFilters
+          ? ` · ${pluralize(activeFilters, "filtro ativo", "filtros ativos")}`
+          : "";
+        byId("filter-summary").textContent = filteredRows.length
+          ? `${pluralize(filteredRows.length, "venda", "vendas")} · receita bruta de ${formatCurrency(totalRevenue)}${filterText}`
+          : `Nenhuma venda encontrada${filterText}. Ajuste os filtros para ver os dados.`;
+      }
+
+      function render(sync = true) {
+        filteredRows = rows.filter(row => filterConfig.every(filter => !state[filter.key] || String(row[filter.key]) === state[filter.key]));
+        const totalRevenue = filteredRows.reduce((sum, row) => sum + row.preco, 0);
+        renderKpis(totalRevenue);
+        renderFamilies();
+        renderStates();
+        renderPayments();
+        renderTable();
+        renderDataQuality();
+        renderSummary(totalRevenue);
+        updateControls();
+        if (sync) syncQuery();
+      }
+
+      function csvCell(value) {
+        let text = String(value);
+        if (/^[=+\-@]/.test(text)) text = `'${text}`;
+        return `"${text.replace(/"/g, '""')}"`;
+      }
+
+      function exportCsv() {
+        if (!filteredRows.length) return;
+        const header = ["Data", "Modelo", "Ano do modelo", "Cidade / UF", "Pagamento", "Entrega", "Preço (USD)"];
+        const lines = filteredRows.map(row => [
+          parseDate(row.data) ? row.data : "Data inválida",
+          row.modelo,
+          row.ano,
+          `${row.cidade} / ${row.estado}`,
+          row.pagamento,
+          row.entrega,
+          row.preco.toFixed(2)
+        ].map(csvCell).join(","));
+        const csv = `\uFEFF${[header.map(csvCell).join(","), ...lines].join("\r\n")}`;
+        const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `vendas-porsche-${new Date().toISOString().slice(0, 10)}.csv`;
+        document.body.append(link);
+        link.click();
+        link.remove();
+        window.setTimeout(() => URL.revokeObjectURL(url), 0);
+        byId("export-status").textContent = `CSV exportado com ${pluralize(filteredRows.length, "registro", "registros")}.`;
+      }
+
+      function clearFilters() {
+        filterConfig.forEach(filter => {
+          state[filter.key] = "";
+          byId(filter.id).value = "";
+        });
+        render();
+        byId("filter-modelo").focus();
+      }
+
+      function showError(error) {
+        byId("loading-state").hidden = true;
+        byId("dashboard").hidden = true;
+        byId("error-state").hidden = false;
+        byId("conteudo").setAttribute("aria-busy", "false");
+        byId("base-count").textContent = "Indisponível";
+        byId("error-message").textContent = error instanceof SyntaxError
+          ? "O JSON embutido não pôde ser lido. Recarregue o arquivo ou restaure a base sanitizada."
+          : "A base embutida não tem o formato esperado. Recarregue o arquivo ou restaure os dados sanitizados.";
+      }
+
+      function start() {
+        byId("reload-button").addEventListener("click", () => window.location.reload());
+        try {
+          rows = JSON.parse(byId("sales-data").textContent);
+          validateRows(rows);
+        } catch (error) {
+          showError(error);
+          return;
+        }
+
+        populateFilters();
+        restoreFilters();
+        byId("base-count").textContent = formatCount(rows.length);
+        renderBaseQuality();
+        document.querySelector(".skip-link").addEventListener("click", () => {
+          window.setTimeout(() => byId("filters").focus(), 0);
+        });
+
+        filterConfig.forEach(filter => {
+          byId(filter.id).addEventListener("change", event => {
+            state[filter.key] = event.target.value;
+            render();
+          });
+        });
+
+        byId("clear-filters").addEventListener("click", clearFilters);
+        byId("export-csv").addEventListener("click", exportCsv);
+        window.addEventListener("popstate", () => {
+          restoreFilters();
+          render(false);
+        });
+
+        window.requestAnimationFrame(() => {
+          window.setTimeout(() => {
+            render();
+            byId("loading-state").hidden = true;
+            byId("dashboard").hidden = false;
+            byId("conteudo").setAttribute("aria-busy", "false");
+          }, 120);
+        });
+      }
+
+      start();
+    })();
+  </script>
+</body>
+</html>

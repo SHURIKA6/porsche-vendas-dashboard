@@ -1,0 +1,9 @@
+data/*.xlsx
+data/*.xls
+__pycache__/
+*.pyc
+.DS_Store
+.impeccable/review/
+.impeccable/mocks/
+.impeccable/questions/
+.impeccable/build/
