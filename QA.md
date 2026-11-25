@@ -77,11 +77,16 @@ A tabela vira uma lista rotulada em telas estreitas, sem rolagem horizontal da p
 
 - Detector mecânico: nenhum erro. Um aviso `cream-palette` foi mantido como override explícito da direção Motorsport premium escolhida pelo usuário.
 - Dials: ENERGY 2 / RHYTHM 2 / MOTION 1.
-- Revisão independente: pendente.
+- Revisão independente: `ship` para código, UI e evidências locais; `ship` final após confirmar a publicação ao vivo.
 
 ## Publicação
 
-Pendente.
+- URL: https://shurika6.github.io/porsche-vendas-dashboard/
+- GitHub Pages: `built`, público, HTTPS enforced.
+- Fonte: branch `gh-pages`, caminho `/`, contendo somente `index.html`.
+- HTTP: 200.
+- SHA-256 do HTML servido: `b9571c32d96f7646a2b38719826d68cda0f55e8af6473230441a28212768d184`, idêntico ao arquivo local.
+- Teste ao vivo: 15 de 15 verificações Playwright passando, com filtro, recarga, CSV, mobile, axe-core e console sem erros.
 
 ## Delivery Gate antislop
 
@@ -98,7 +103,7 @@ Pendente.
 - R-32 PASS: teclado, ordem de foco e indicador de 3px testados.
 - R-33 PASS: nenhum recurso foi implementado por script que reescreve HTML ou CSS.
 - R-34 PASS: não há alternância de tema.
-- R-35 PASS: aplicação executada e 87 interações e estados verificados; publicação ao vivo ainda pendente.
+- R-35 PASS: aplicação executada, 87 verificações locais e 15 verificações ao vivo; publicação HTTP 200 confirmada.
 - R-36 PASS: nenhuma métrica de performance, segurança ou conformidade foi inventada.
 - R-37 PASS: direção Motorsport premium confirmada antes da implementação.
 - R-38 PASS: conteúdo e números reais, sem placeholders fantasiados.

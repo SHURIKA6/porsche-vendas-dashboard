@@ -101,6 +101,12 @@ python3 scripts/prepare_data.py --input /caminho/fora-do-repositorio/porsche_dat
 
 O XLSX local está ignorado pelo Git para não expor as colunas brutas.
 
+## Publicação
+
+A branch `main` contém o código-fonte, os dados tratados e a documentação. A branch `gh-pages` contém somente o `index.html`, que é a fonte do GitHub Pages. Essa separação evita publicar arquivos de desenvolvimento e mantém a dashboard como um artefato realmente único.
+
+O link público é https://shurika6.github.io/porsche-vendas-dashboard/. O HTML servido foi comparado por SHA-256 com o arquivo local e testado ao vivo.
+
 ## Prompt e refinamentos
 
 O briefing inicial pedia três perguntas de negócio, filtros combináveis, KPIs e uma identidade Motorsport premium. A versão final detalhou moeda USD, tabela auditável, exportação CSV, query string, estados de interface, acessibilidade e a restrição de publicar apenas campos sanitizados.
@@ -128,6 +134,7 @@ Decisões de design:
 - 5 testes automatizados do tratamento passando.
 - 100 registros e 24 datas inválidas conferidos após o preparo.
 - 87 de 87 verificações de navegador passando.
+- 15 de 15 verificações no link publicado passando.
 - Filtros, KPIs, gráficos, tabela, exportação CSV e limpeza testados no navegador.
 - Layout verificado em 1440, 1024, 768 e 375px, sem overflow horizontal.
 - Navegação por teclado, foco visível e movimento reduzido verificados.

@@ -1,0 +1,398 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-25T18:12:19Z",
+  "title": "Design System: Porsche Vendas Dashboard",
+  "extensions": {
+    "scanMetadata": {
+      "mode": "scan",
+      "platform": "web",
+      "artifact": "index.html",
+      "artifactSha256": "b9571c32d96f7646a2b38719826d68cda0f55e8af6473230441a28212768d184",
+      "tokenSource": ":root custom properties and component CSS in index.html",
+      "viewportReference": ["1440px", "1024px", "768px", "375px"]
+    },
+    "colorMeta": {
+      "paddock-paper": {
+        "role": "neutral",
+        "displayName": "Off-white Paddock",
+        "canonical": "#f2efe6",
+        "tonalRamp": [
+          "oklch(18% 0.007 91.5197)",
+          "oklch(28% 0.0108 91.5197)",
+          "oklch(38% 0.0124 91.5197)",
+          "oklch(48% 0.0124 91.5197)",
+          "oklch(58% 0.0108 91.5197)",
+          "oklch(68% 0.0083 91.5197)",
+          "oklch(80% 0.0052 91.5197)",
+          "oklch(92% 0.0021 91.5197)"
+        ]
+      },
+      "panel-surface": {
+        "role": "neutral",
+        "displayName": "Superfície de Painel",
+        "canonical": "#fbf9f3",
+        "tonalRamp": [
+          "oklch(18% 0.0046 91.4815)",
+          "oklch(28% 0.0072 91.4815)",
+          "oklch(38% 0.0082 91.4815)",
+          "oklch(48% 0.0082 91.4815)",
+          "oklch(58% 0.0072 91.4815)",
+          "oklch(68% 0.0055 91.4815)",
+          "oklch(80% 0.0034 91.4815)",
+          "oklch(92% 0.0014 91.4815)"
+        ]
+      },
+      "carbon-ink": {
+        "role": "neutral",
+        "displayName": "Tinta Carbono",
+        "canonical": "#171715",
+        "tonalRamp": [
+          "oklch(18% 0.0022 106.7397)",
+          "oklch(28% 0.0034 106.7397)",
+          "oklch(38% 0.0039 106.7397)",
+          "oklch(48% 0.0039 106.7397)",
+          "oklch(58% 0.0034 106.7397)",
+          "oklch(68% 0.0026 106.7397)",
+          "oklch(80% 0.0016 106.7397)",
+          "oklch(92% 0.0006 106.7397)"
+        ]
+      },
+      "secondary-ink": {
+        "role": "neutral",
+        "displayName": "Texto Secundário",
+        "canonical": "#5a5852",
+        "tonalRamp": [
+          "oklch(18% 0.0056 91.5841)",
+          "oklch(28% 0.0086 91.5841)",
+          "oklch(38% 0.0099 91.5841)",
+          "oklch(48% 0.0099 91.5841)",
+          "oklch(58% 0.0086 91.5841)",
+          "oklch(68% 0.0066 91.5841)",
+          "oklch(80% 0.0041 91.5841)",
+          "oklch(92% 0.0016 91.5841)"
+        ]
+      },
+      "hairline": {
+        "role": "neutral",
+        "displayName": "Linha Fina",
+        "canonical": "#c9c4b9",
+        "tonalRamp": [
+          "oklch(18% 0.0091 86.4351)",
+          "oklch(28% 0.0141 86.4351)",
+          "oklch(38% 0.0161 86.4351)",
+          "oklch(48% 0.0161 86.4351)",
+          "oklch(58% 0.0141 86.4351)",
+          "oklch(68% 0.0108 86.4351)",
+          "oklch(80% 0.0067 86.4351)",
+          "oklch(92% 0.0027 86.4351)"
+        ]
+      },
+      "chart-track": {
+        "role": "neutral",
+        "displayName": "Trilha de Gráfico",
+        "canonical": "#e4dfd5",
+        "tonalRamp": [
+          "oklch(18% 0.0082 84.5849)",
+          "oklch(28% 0.0127 84.5849)",
+          "oklch(38% 0.0145 84.5849)",
+          "oklch(48% 0.0145 84.5849)",
+          "oklch(58% 0.0127 84.5849)",
+          "oklch(68% 0.0097 84.5849)",
+          "oklch(80% 0.0061 84.5849)",
+          "oklch(92% 0.0024 84.5849)"
+        ]
+      },
+      "signal-red": {
+        "role": "primary",
+        "displayName": "Vermelho Sinal",
+        "canonical": "#c8102e",
+        "tonalRamp": [
+          "oklch(18% 0.1167 22.3174)",
+          "oklch(28% 0.1815 22.3174)",
+          "oklch(38% 0.2074 22.3174)",
+          "oklch(48% 0.2074 22.3174)",
+          "oklch(58% 0.1815 22.3174)",
+          "oklch(68% 0.1383 22.3174)",
+          "oklch(80% 0.0864 22.3174)",
+          "oklch(92% 0.0346 22.3174)"
+        ]
+      },
+      "signal-red-deep": {
+        "role": "primary",
+        "displayName": "Vermelho Sinal Profundo",
+        "canonical": "#a20c25",
+        "tonalRamp": [
+          "oklch(18% 0.0994 21.8547)",
+          "oklch(28% 0.1547 21.8547)",
+          "oklch(38% 0.1768 21.8547)",
+          "oklch(48% 0.1768 21.8547)",
+          "oklch(58% 0.1547 21.8547)",
+          "oklch(68% 0.1179 21.8547)",
+          "oklch(80% 0.0737 21.8547)",
+          "oklch(92% 0.0295 21.8547)"
+        ]
+      },
+      "carbon-black": {
+        "role": "neutral",
+        "displayName": "Preto Carbono",
+        "canonical": "#151513",
+        "tonalRamp": [
+          "oklch(18% 0.0022 106.7588)",
+          "oklch(28% 0.0034 106.7588)",
+          "oklch(38% 0.0039 106.7588)",
+          "oklch(48% 0.0039 106.7588)",
+          "oklch(58% 0.0034 106.7588)",
+          "oklch(68% 0.0026 106.7588)",
+          "oklch(80% 0.0016 106.7588)",
+          "oklch(92% 0.0007 106.7588)"
+        ]
+      },
+      "warm-white": {
+        "role": "neutral",
+        "displayName": "Branco Quente",
+        "canonical": "#fffdf7",
+        "tonalRamp": [
+          "oklch(18% 0.0046 91.4805)",
+          "oklch(28% 0.0072 91.4805)",
+          "oklch(38% 0.0082 91.4805)",
+          "oklch(48% 0.0082 91.4805)",
+          "oklch(58% 0.0072 91.4805)",
+          "oklch(68% 0.0055 91.4805)",
+          "oklch(80% 0.0034 91.4805)",
+          "oklch(92% 0.0014 91.4805)"
+        ]
+      }
+    },
+    "tonalRampNote": "As rampas OKLCH são metadados derivados para pré-visualização; somente os valores canônicos em hex existem no CSS implementado.",
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Título principal da dashboard, uppercase e condensado."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Perguntas e títulos de seção."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Títulos dos estados de carregamento e erro."
+      },
+      "metric-revenue": {
+        "displayName": "Metric Revenue",
+        "purpose": "Receita bruta dominante na banda de indicadores."
+      },
+      "metric-secondary": {
+        "displayName": "Metric Secondary",
+        "purpose": "Vendas registradas e ticket médio."
+      },
+      "metric-leader": {
+        "displayName": "Metric Leader",
+        "purpose": "Nome do modelo líder."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Leitura, descrições, controles e células da tabela."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Cabeçalhos de tabela e rótulos técnicos uppercase."
+      },
+      "wordmark": {
+        "displayName": "Wordmark",
+        "purpose": "Identidade textual compacta do cabeçalho."
+      }
+    },
+    "fontDependencies": [
+      {
+        "family": "Barlow Condensed",
+        "weights": "500;600;700",
+        "source": "Google Fonts",
+        "loading": "preconnect + stylesheet with display=swap",
+        "fallback": "Arial Narrow, Liberation Sans Narrow, sans-serif",
+        "offlineBehavior": "Fallbacks locais/system assumem a renderização; o conteúdo permanece utilizável."
+      },
+      {
+        "family": "Source Sans 3",
+        "weights": "400;500;600;700",
+        "source": "Google Fonts",
+        "loading": "preconnect + stylesheet with display=swap",
+        "fallback": "Segoe UI, Arial, sans-serif",
+        "offlineBehavior": "Fallbacks locais/system assumem a renderização; o conteúdo permanece utilizável."
+      }
+    ],
+    "shadows": [],
+    "motion": [
+      {
+        "name": "interaction-standard",
+        "value": "160ms ease-out",
+        "purpose": "Botões, selects, skip link e respostas de hover/focus/active."
+      },
+      {
+        "name": "data-width",
+        "value": "220ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Atualização da largura das barras quando o recorte muda."
+      },
+      {
+        "name": "scroll-smooth",
+        "value": "smooth",
+        "purpose": "Rolagem suave quando permitida pelo sistema."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "0.01ms",
+        "purpose": "Duração quase instantânea e rolagem auto sob prefers-reduced-motion."
+      }
+    ],
+    "breakpoints": [
+      { "name": "content-max", "value": "1440px" },
+      { "name": "filters-kpi", "value": "1100px" },
+      { "name": "dual-filter-heading", "value": "960px" },
+      { "name": "mobile-layout", "value": "760px" },
+      { "name": "compact", "value": "560px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Ação principal de exportação, com hover vermelho e estado active contido.",
+      "html": "<button class=\"ds-button-primary\" type=\"button\">Exportar CSV</button>",
+      "css": ".ds-button-primary { min-height: 44px; padding: 10px 16px; border: 1px solid var(--ink); border-radius: 2px; background: var(--ink); color: var(--white); font-family: var(--body, \"Source Sans 3\", \"Segoe UI\", Arial, sans-serif); font-weight: 600; line-height: 1.2; cursor: pointer; transition: background-color 160ms ease-out, border-color 160ms ease-out, color 160ms ease-out, transform 160ms ease-out; } .ds-button-primary:hover:not(:disabled) { border-color: var(--signal); background: var(--signal); } .ds-button-primary:active:not(:disabled) { transform: translateY(1px); } .ds-button-primary:focus-visible { outline: 3px solid var(--signal); outline-offset: 3px; } .ds-button-primary:disabled { opacity: 0.45; cursor: not-allowed; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Ação secundária de limpar filtros, com fundo transparente e hover cinza quente.",
+      "html": "<button class=\"ds-button-secondary\" type=\"button\">Limpar filtros</button>",
+      "css": ".ds-button-secondary { min-height: 44px; padding: 10px 16px; border: 1px solid var(--ink); border-radius: 2px; background: transparent; color: var(--ink); font-family: var(--body, \"Source Sans 3\", \"Segoe UI\", Arial, sans-serif); font-weight: 600; line-height: 1.2; cursor: pointer; transition: background-color 160ms ease-out, border-color 160ms ease-out, color 160ms ease-out, transform 160ms ease-out; } .ds-button-secondary:hover:not(:disabled) { background: #e9e4da; } .ds-button-secondary:active:not(:disabled) { transform: translateY(1px); } .ds-button-secondary:focus-visible { outline: 3px solid var(--signal); outline-offset: 3px; } .ds-button-secondary:disabled { opacity: 0.45; cursor: not-allowed; }"
+    },
+    {
+      "name": "Native Filter Select",
+      "kind": "input",
+      "refersTo": "field-select",
+      "description": "Select nativo com rótulo visível, alvo de 44px e aparência nativa preservada.",
+      "html": "<div class=\"ds-field\"><label for=\"ds-filter-model\">Modelo</label><select id=\"ds-filter-model\"><option value=\"\">Todos os modelos</option><option value=\"family\">Família</option></select></div>",
+      "css": ".ds-field { min-width: 0; } .ds-field label { display: block; margin-bottom: 6px; font-family: var(--body, \"Source Sans 3\", \"Segoe UI\", Arial, sans-serif); font-size: 0.86rem; font-weight: 600; } .ds-field select { width: 100%; min-height: 44px; padding: 9px 30px 9px 10px; border: 1px solid #8f8b82; border-radius: 2px; background: var(--white); color: var(--ink); font-family: var(--body, \"Source Sans 3\", \"Segoe UI\", Arial, sans-serif); text-overflow: ellipsis; transition: border-color 160ms ease-out, background-color 160ms ease-out; } .ds-field select:hover { border-color: var(--ink); background: #fffefa; } .ds-field select:focus-visible { outline: 3px solid var(--signal); outline-offset: 3px; }"
+    },
+    {
+      "name": "Analysis Panel",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "Painel analítico plano, com borda fina, título de pergunta e contagem em vermelho profundo.",
+      "html": "<section class=\"ds-panel\" aria-labelledby=\"ds-panel-title\"><div class=\"ds-panel-heading\"><div><h2 id=\"ds-panel-title\">Quais famílias de modelos puxam a receita?</h2><p>Ranking por receita, com quantidade e ticket médio por família.</p></div><p class=\"ds-panel-stat\">0 famílias</p></div></section>",
+      "css": ".ds-panel { min-width: 0; padding: 28px; border: 1px solid var(--line); border-radius: 3px; background: var(--surface); color: var(--ink); } .ds-panel-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; margin-bottom: 18px; } .ds-panel-heading h2 { margin: 0; font-family: var(--display, \"Barlow Condensed\", \"Arial Narrow\", \"Liberation Sans Narrow\", sans-serif); font-size: clamp(1.65rem, 2.5vw, 2.2rem); font-weight: 600; letter-spacing: -0.015em; line-height: 1.05; } .ds-panel-heading p { margin: 6px 0 0; color: var(--muted); font-family: var(--body, \"Source Sans 3\", \"Segoe UI\", Arial, sans-serif); font-size: 0.94rem; } .ds-panel .ds-panel-stat { flex: 0 0 auto; margin: 0; color: var(--signal-ink); font-family: var(--display, \"Barlow Condensed\", \"Arial Narrow\", \"Liberation Sans Narrow\", sans-serif); font-size: 1.35rem; font-weight: 600; white-space: nowrap; } @media (max-width: 560px) { .ds-panel { padding: 18px; } .ds-panel-heading { flex-direction: column; gap: 10px; } }"
+    },
+    {
+      "name": "Revenue KPI Band",
+      "kind": "custom",
+      "refersTo": "kpi-revenue",
+      "description": "Banda de indicadores em carbono com receita dominante e régua vermelha inferior.",
+      "html": "<div class=\"ds-kpi-band\"><article class=\"ds-kpi ds-kpi-revenue\"><p class=\"ds-kpi-label\">Receita bruta</p><p class=\"ds-kpi-value\">$0</p><p class=\"ds-kpi-note\">USD · soma dos preços das vendas no recorte. Não é lucro.</p></article><article class=\"ds-kpi\"><p class=\"ds-kpi-label\">Vendas registradas</p><p class=\"ds-kpi-value\">0</p><p class=\"ds-kpi-note\">Registros no recorte</p></article><article class=\"ds-kpi\"><p class=\"ds-kpi-label\">Ticket médio</p><p class=\"ds-kpi-value\">$0</p><p class=\"ds-kpi-note\">Receita por venda</p></article><article class=\"ds-kpi ds-kpi-leader\"><p class=\"ds-kpi-label\">Modelo líder</p><p class=\"ds-kpi-value\">Sem vendas</p><p class=\"ds-kpi-note\">Ordenado por receita</p></article></div>",
+      "css": ".ds-kpi-band { display: grid; grid-template-columns: 1.8fr 0.8fr 0.9fr 1.1fr; overflow: hidden; border: 1px solid var(--black); border-radius: 3px; background: var(--black); color: var(--white); } .ds-kpi { min-width: 0; padding: 22px 24px; border-left: 1px solid #45443f; } .ds-kpi:first-child { border-left: 0; } .ds-kpi-revenue { position: relative; } .ds-kpi-revenue::after { position: absolute; right: 24px; bottom: 0; left: 24px; height: 3px; background: var(--signal); content: \"\"; } .ds-kpi-label { margin: 0 0 7px; color: #ddd8ce; font-family: var(--body, \"Source Sans 3\", \"Segoe UI\", Arial, sans-serif); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; } .ds-kpi-value { margin: 0; font-family: var(--display, \"Barlow Condensed\", \"Arial Narrow\", \"Liberation Sans Narrow\", sans-serif); font-variant-numeric: tabular-nums; font-weight: 600; letter-spacing: -0.02em; line-height: 0.95; overflow-wrap: anywhere; } .ds-kpi-revenue .ds-kpi-value { font-size: clamp(3.1rem, 6vw, 5.8rem); } .ds-kpi:not(.ds-kpi-revenue) .ds-kpi-value { font-size: clamp(1.8rem, 3vw, 2.6rem); } .ds-kpi-leader .ds-kpi-value { font-size: clamp(1.55rem, 2.5vw, 2.15rem); line-height: 1; } .ds-kpi-note { margin: 10px 0 0; color: #ddd8ce; font-family: var(--body, \"Source Sans 3\", \"Segoe UI\", Arial, sans-serif); font-size: 0.82rem; } @media (max-width: 1100px) { .ds-kpi-band { grid-template-columns: 1.5fr 1fr 1fr; } .ds-kpi-leader { grid-column: 1 / -1; border-top: 1px solid #45443f; border-left: 0; } } @media (max-width: 760px) { .ds-kpi-band { grid-template-columns: 1fr 1fr; } .ds-kpi-revenue { grid-column: 1 / -1; } .ds-kpi:nth-child(2), .ds-kpi:nth-child(3) { border-top: 1px solid #45443f; } .ds-kpi:nth-child(3) { border-left: 0; } .ds-kpi-leader { grid-column: 1 / -1; } } @media (max-width: 560px) { .ds-kpi-band { grid-template-columns: 1fr; } .ds-kpi, .ds-kpi:nth-child(2), .ds-kpi:nth-child(3), .ds-kpi-leader { grid-column: auto; border-top: 1px solid #45443f; border-left: 0; } .ds-kpi:first-child { border-top: 0; } }"
+    },
+    {
+      "name": "Revenue Bar Row",
+      "kind": "custom",
+      "description": "Linha de ranking por receita com trilho técnico, valor tabular e adaptação mobile.",
+      "html": "<li class=\"ds-bar-row\"><div class=\"ds-bar-label\"><span class=\"ds-rank\" aria-hidden=\"true\">1</span><span class=\"ds-bar-name\">Família</span></div><div class=\"ds-bar-track\" aria-hidden=\"true\"><div class=\"ds-bar-fill\" style=\"--bar-size: 64%\"></div></div><div class=\"ds-bar-value\"><strong>$0</strong><span>0 vendas · ticket médio $0</span></div></li>",
+      "css": ".ds-bar-row { display: grid; grid-template-columns: minmax(140px, 0.75fr) minmax(120px, 1.8fr) minmax(180px, 1fr); gap: 18px; align-items: center; padding: 13px 0; border-top: 1px solid var(--line); } .ds-bar-row:first-child { border-top: 0; } .ds-bar-label { display: flex; min-width: 0; align-items: baseline; gap: 10px; } .ds-rank { min-width: 1.35rem; color: var(--signal-ink); font-family: var(--display, \"Barlow Condensed\", \"Arial Narrow\", \"Liberation Sans Narrow\", sans-serif); font-size: 1.2rem; font-weight: 600; font-variant-numeric: tabular-nums; } .ds-bar-name { min-width: 0; font-weight: 600; white-space: nowrap; } .ds-bar-track { height: 14px; border-radius: 1px; background: var(--track); } .ds-bar-fill { width: var(--bar-size); height: 100%; min-width: 2px; background: var(--signal); transition: width 220ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-bar-value { text-align: right; font-variant-numeric: tabular-nums; } .ds-bar-value strong { display: block; font-weight: 700; } .ds-bar-value span { display: block; margin-top: 2px; color: var(--muted); font-size: 0.82rem; } @media (max-width: 760px) { .ds-bar-row { grid-template-columns: minmax(0, 1fr) auto; gap: 8px 12px; } .ds-bar-label { grid-row: 1; grid-column: 1; } .ds-bar-value { grid-row: 1; grid-column: 2; } .ds-bar-track { grid-row: 2; grid-column: 1 / -1; } }"
+    },
+    {
+      "name": "Data Quality Notice",
+      "kind": "custom",
+      "description": "Aviso auditável de qualidade da base, com superfície quente e destaque vermelho profundo.",
+      "html": "<p class=\"ds-data-quality\"><strong>Nenhuma data inválida neste recorte.</strong> Todos os registros permanecem nos cálculos.</p>",
+      "css": ".ds-data-quality { margin: 0 0 16px; padding: 12px 14px; border: 1px solid var(--line); background: #eee9df; font-family: var(--body, \"Source Sans 3\", \"Segoe UI\", Arial, sans-serif); font-size: 0.88rem; } .ds-data-quality strong { color: var(--signal-ink); }"
+    },
+    {
+      "name": "Audit Table",
+      "kind": "custom",
+      "description": "Tabela auditável com cabeçalhos técnicos, hover discreto e lista rotulada no mobile.",
+      "html": "<div class=\"ds-table-wrap\"><table class=\"ds-audit-table\"><caption>Vendas filtradas.</caption><thead><tr><th scope=\"col\">Data</th><th scope=\"col\">Modelo</th><th scope=\"col\">Ano do modelo</th><th scope=\"col\">Cidade / UF</th><th scope=\"col\">Pagamento</th><th scope=\"col\">Entrega</th><th scope=\"col\" class=\"ds-numeric\">Preço (USD)</th></tr></thead><tbody><tr><td data-label=\"Data\"><span class=\"ds-invalid-date\">Data inválida</span></td><td data-label=\"Modelo\">Modelo</td><td data-label=\"Ano do modelo\">0</td><td data-label=\"Cidade / UF\">Cidade / UF</td><td data-label=\"Pagamento\">Pagamento</td><td data-label=\"Entrega\">Entrega</td><td data-label=\"Preço (USD)\" class=\"ds-numeric\">$0</td></tr></tbody></table></div>",
+      "css": ".ds-table-wrap { min-width: 0; } .ds-audit-table { width: 100%; border-collapse: collapse; font-family: var(--body, \"Source Sans 3\", \"Segoe UI\", Arial, sans-serif); font-size: 0.9rem; font-variant-numeric: tabular-nums; } .ds-audit-table caption { padding: 0 0 12px; color: var(--muted); font-weight: 600; text-align: left; } .ds-audit-table th { padding: 10px 12px; border-bottom: 2px solid var(--ink); color: var(--muted); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.04em; text-align: left; text-transform: uppercase; } .ds-audit-table td { padding: 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; overflow-wrap: anywhere; } .ds-audit-table tbody tr:hover { background: #f1ece3; } .ds-audit-table .ds-numeric { text-align: right; white-space: nowrap; } .ds-audit-table .ds-invalid-date { color: var(--signal-ink); font-weight: 600; text-decoration: underline; text-decoration-style: dotted; text-underline-offset: 3px; } @media (max-width: 760px) { .ds-table-wrap .ds-audit-table, .ds-table-wrap .ds-audit-table tbody, .ds-table-wrap .ds-audit-table tr, .ds-table-wrap .ds-audit-table td { display: block; width: 100%; } .ds-table-wrap .ds-audit-table thead { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; } .ds-table-wrap .ds-audit-table caption { display: block; } .ds-table-wrap .ds-audit-table tr { padding: 14px 0; border-bottom: 1px solid var(--line); } .ds-table-wrap .ds-audit-table td { display: grid; grid-template-columns: 7.5rem minmax(0, 1fr); gap: 12px; padding: 5px 0; border: 0; text-align: left; white-space: normal; } .ds-table-wrap .ds-audit-table td::before { padding-top: 2px; color: var(--muted); content: attr(data-label); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; } } @media (max-width: 560px) { .ds-table-wrap .ds-audit-table td { grid-template-columns: 6.8rem minmax(0, 1fr); } }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Motorsport premium",
+    "overview": "A dashboard trata a base como um painel de análise de concessionária, não como uma landing page. O clima é preciso, contido e automotivo: receita, volume e ticket médio aparecem antes dos gráficos, e cada visual responde a uma pergunta de negócio. A identidade textual mantém o projeto independente e auditável, sem apresentar a dashboard como um canal oficial da marca.\n\nA força visual vem da hierarquia, da régua vermelha e do alinhamento comum, não de ornamentos. Off-white de paddock e preto carbono formam a estrutura; vermelho sinal marca dado dominante, estado e interação. Superfícies planas, bordas finas e raios pequenos preservam a leitura densa. O movimento se limita a respostas de interação, e a tabela filtrada permite reproduzir qualquer recorte.",
+    "keyCharacteristics": [
+      "Receita bruta é a primeira e dominante métrica.",
+      "Paleta off-white de paddock, preto carbono e vermelho sinal.",
+      "Barlow Condensed nos títulos; Source Sans 3 na leitura e nos dados.",
+      "Superfícies planas, bordas finas e raios pequenos.",
+      "Filtros nativos e tabela auditável no mesmo recorte.",
+      "Movimento apenas de interação; layout responsivo em 1440/1024/768/375."
+    ],
+    "rules": [
+      {
+        "name": "The Signal Rule",
+        "body": "Vermelho sinal marca prioridade, dado ou interação; vermelho sinal profundo assume textos pequenos sobre fundos claros. Não transformar o acento em campo decorativo.",
+        "section": "colors"
+      },
+      {
+        "name": "The Cream Override Rule",
+        "body": "A paleta cream/off-white é override explícito do usuário. O warning `cream-palette` não é defeito e não autoriza substituí-la por branco puro ou por um tema escuro global.",
+        "section": "colors"
+      },
+      {
+        "name": "The Two Voices Rule",
+        "body": "Barlow Condensed conduz títulos e métricas; Source Sans 3 conduz leitura e dados. Não usar a condensada em parágrafos nem substituir a dupla por uma única família.",
+        "section": "typography"
+      },
+      {
+        "name": "The Numeric Alignment Rule",
+        "body": "Valores monetários, contagens e percentuais usam tabular figures; colunas numéricas da tabela alinham à direita.",
+        "section": "typography"
+      },
+      {
+        "name": "The Revenue-First Rule",
+        "body": "A receita bruta abre a banda de indicadores, recebe a maior escala tipográfica e a única régua vermelha inferior. Vendas, ticket médio e modelo líder permanecem subordinados.",
+        "section": "layout"
+      },
+      {
+        "name": "The Native Filter Rule",
+        "body": "Os filtros são selects nativos com rótulos visíveis e altura mínima de 44px. Não substituí-los por menus decorativos ou chips de aparência customizada.",
+        "section": "layout"
+      },
+      {
+        "name": "The Flat Surface Rule",
+        "body": "Painéis e controles são planos em repouso. Não introduzir sombras, glassmorphism ou profundidade decorativa para separar conteúdo.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Small Radius Rule",
+        "body": "Manter 3px para superfícies, 2px para controles e 1px para trilhos. O raio existe para suavizar a aresta técnica, não para criar uma linguagem arredondada.",
+        "section": "shapes"
+      },
+      {
+        "name": "The One Recorte Rule",
+        "body": "Filtros, indicadores, gráficos e tabela representam o mesmo conjunto de registros. Nenhum visual pode contar uma história diferente da tabela auditável.",
+        "section": "components"
+      },
+      {
+        "name": "The Interaction-Only Motion Rule",
+        "body": "Movimento ocorre em hover, foco, active ou atualização de barras. Não adicionar animações ambientes, autoplay ou transições de entrada; `prefers-reduced-motion` reduz durações a 0.01ms e desativa rolagem suave.",
+        "section": "components"
+      }
+    ],
+    "dos": [
+      "**Do** manter a receita bruta como primeira e dominante métrica, com a régua vermelha inferior.",
+      "**Do** usar superfícies planas, bordas de 1px e raios de 3px, 2px ou 1px conforme o componente.",
+      "**Do** preservar selects nativos, rótulos visíveis e altura mínima de 44px.",
+      "**Do** registrar a dependência de Google Fonts e manter os fallbacks locais de Barlow Condensed e Source Sans 3.",
+      "**Do** usar tabular figures e alinhar valores numéricos à direita na tabela.",
+      "**Do** manter filtros, gráficos e tabela no mesmo recorte, com a tabela acessível como evidência final.",
+      "**Do** verificar 1440/1024/768/375 e empilhar controles e KPIs abaixo de 560px sem overflow horizontal."
+    ],
+    "donts": [
+      "**Don't** adicionar sombras, gradientes, vidro ou elevação decorativa.",
+      "**Don't** transformar vermelho sinal em fundo geral ou usar o tom puro para textos pequenos sobre off-white.",
+      "**Don't** substituir a paleta cream/off-white por causa do warning `cream-palette`; ela é override explícito do usuário.",
+      "**Don't** adicionar movimento ambiente, autoplay ou animações de entrada.",
+      "**Don't** esconder a tabela auditável atrás de abas ou substituí-la por uma lista sem os rótulos dos campos.",
+      "**Don't** imitar um cockpit, criar cards decorativos ou apresentar a dashboard como canal oficial da Porsche."
+    ]
+  }
+}
